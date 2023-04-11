@@ -1,0 +1,11 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'refresh'
+jwt:
+  #  30분 : 1800초
+  access_expiration: 1800000
+  #  15일 : 1296000초
+  refresh_expiration: 1296000000
+  

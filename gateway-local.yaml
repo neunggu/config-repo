@@ -1,0 +1,40 @@
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: msa
+            preLogger: true
+            postLogger: true
+      routes:
+        - id: user-service
+          uri: http://localhost:1234
+          predicates:
+            - Path=/user/**
+          filters:
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            # - name: UserFilter
+            #   args:
+            #     baseMessage: user
+            #     preLogger: true
+            #     postLogger: true
+        - id: wallet-service
+          uri: http://localhost:1235
+          predicates:
+            - Path=/wallet/**
+          filters:
+            - RewritePath=/wallet/(?<segment>.*), /$\{segment}
+            # - name: WalletFilter
+            #   args:
+            #     baseMessage: wallet
+            #     preLogger: true
+            #     postLogger: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    gateway:
+      enabled: true
